@@ -19,28 +19,53 @@ function formateDataDiameter(x) {
 }
 
 function formateDataPopulation(x) {
-    if(x==="unknown"){
+    if (x === "unknown") {
         return x;
     }
-    return x.replace(/(\d)(?=(\d{3})+([^\d]|$))/g, "$1,")+" people";
+    return x.replace(/(\d)(?=(\d{3})+([^\d]|$))/g, "$1,") + " people";
+}
+
+function formateDataSurface(x) {
+    if (x === "unknown") {
+        return x;
+    }
+    return x + "%";
+}
+
+function formateDataResidents(x) {
+    if (x === 0) {
+        x = "No known residents";
+    } else {
+        x = `<button type="button" class="btn btn-outline-secondary">${x} resident(s)</button>`;
+    }
+    return x
+}
+
+function renderTableHeader() {
+    let tableHeaderArr = ['Name', 'Diameter', 'Climate', 'Terrain',
+        'Surface Water Percentage', 'Population', 'Residants', 'Vote'];
+    let headerRow = "";
+
+    for (let j = 0; j < tableHeaderArr.length; j++) {
+        headerRow += `<th>${tableHeaderArr[j]}</th>`;
+    }
+    return '<tr>' + headerRow + '</tr>';
 }
 
 function renderHTML(data) {
-    let tableHeaderArr = ['Name', 'Diameter', 'Climate', 'Terrain',
-        'Surface Water Percentage', 'Population', 'Residants', 'Vote'];
     let tablePlanet = document.getElementById('table-planets');
+    tablePlanet.insertAdjacentHTML('beforeend', renderTableHeader());
     let results = data.results;
     let newRow = "";
     for (let i = 0; i < results.length; i++) {
-
         newRow += `<tr><td>${results[i].name} </td>
             <td>${formateDataDiameter(results[i].diameter)}</td>
             <td>${results[i].climate}</td>
             <td>${results[i].terrain}</td>
-            <td>${results[i].surface_water} </td>
-            <td>${formateDataPopulation(results[i].population)} </td>
-            <td>${results[i].residents.length} </td>
-            <td>vote</td></tr>`
+            <td>${formateDataSurface(results[i].surface_water)}</td>
+            <td>${formateDataPopulation(results[i].population)}</td>
+            <td>${formateDataResidents(results[i].residents.length)}</td>
+            <td><button type="button" class="btn btn-outline-secondary">vote</button></td></tr>`
     }
     tablePlanet.insertAdjacentHTML('beforeend', newRow);
 }
