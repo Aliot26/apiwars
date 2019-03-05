@@ -14,6 +14,17 @@ function getDatabyRequest() {
     xhr.send();
 }
 
+function formateDataDiameter(x) {
+    return x.replace(/(\w+)(\w{3})/, "$1,$2 km");
+}
+
+function formateDataPopulation(x) {
+    if(x==="unknown"){
+        return x;
+    }
+    return x.replace(/(\d)(?=(\d{3})+([^\d]|$))/g, "$1,")+" people";
+}
+
 function renderHTML(data) {
     let tableHeaderArr = ['Name', 'Diameter', 'Climate', 'Terrain',
         'Surface Water Percentage', 'Population', 'Residants', 'Vote'];
@@ -21,14 +32,15 @@ function renderHTML(data) {
     let results = data.results;
     let newRow = "";
     for (let i = 0; i < results.length; i++) {
-        newRow += '<tr><td>'+results[i].name+'</td>'+
-            '<td>'+results[i].diameter+'</td>'+
-            '<td>'+results[i].climate+'</td>'+
-            '<td>'+results[i].terrain+'</td>'+
-            '<td>'+results[i].surface_water+'</td>'+
-            '<td>'+results[i].population+'</td>'+
-            '<td>'+results[i].residents.length+'</td>'+
-            '<td>vote</td></tr>'
+
+        newRow += `<tr><td>${results[i].name} </td>
+            <td>${formateDataDiameter(results[i].diameter)}</td>
+            <td>${results[i].climate}</td>
+            <td>${results[i].terrain}</td>
+            <td>${results[i].surface_water} </td>
+            <td>${formateDataPopulation(results[i].population)} </td>
+            <td>${results[i].residents.length} </td>
+            <td>vote</td></tr>`
     }
     tablePlanet.insertAdjacentHTML('beforeend', newRow);
 }
