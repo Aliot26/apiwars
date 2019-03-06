@@ -1,17 +1,18 @@
-function getDatabyRequest() {
-    let xhr = new XMLHttpRequest();
-    xhr.open('GET', 'https://swapi.co/api/planets/');
-    xhr.onload = function () {
-
-        if (xhr.status === 200) {
-            let data = JSON.parse(xhr.responseText);
-            console.log(data);
-            renderHTML(data);
-        } else {
-            console.log("We connected to the server, but it returned an error");
-        }
-    };
-    xhr.send();
+function getDatabyRequest(method, url) {
+    return new Promise(function (resolve, reject) {
+        let xhr = new XMLHttpRequest();
+        xhr.open(method, url);
+        xhr.onload = function () {
+            if (xhr.status === 200) {
+                let data = JSON.parse(xhr.responseText);
+                resolve(data);
+                console.log(data);
+            } else {
+                reject(console.log("We connected to the server, but it returned an error"));
+            }
+        };
+        xhr.send();
+    });
 }
 
 function formateDataDiameter(x) {
@@ -32,11 +33,11 @@ function formateDataSurface(x) {
     return x + "%";
 }
 
-function formateDataResidents(x) {
+function formateDataResidents(x, i) {
     if (x === 0) {
         x = "No known residents";
     } else {
-        x = `<button type="button" class="btn btn-outline-secondary">${x} resident(s)</button>`;
+        x = `<button id="r${i}" type="button" class="btn btn-outline-secondary resident" data-toggle="modal" data-target="#exampleModal">${x} resident(s)</button>`;
     }
     return x
 }
@@ -64,15 +65,67 @@ function renderHTML(data) {
             <td>${results[i].terrain}</td>
             <td>${formateDataSurface(results[i].surface_water)}</td>
             <td>${formateDataPopulation(results[i].population)}</td>
-            <td>${formateDataResidents(results[i].residents.length)}</td>
+            <td>${formateDataResidents(results[i].residents.length, i)}</td>
             <td><button type="button" class="btn btn-outline-secondary">vote</button></td></tr>`
     }
     tablePlanet.insertAdjacentHTML('beforeend', newRow);
+    return data;
+}
+
+function renderModalWindowResident() {
+
+
+}
+
+
+function getResidentsLink(data, btn) {
+    let buttonId = btn.getAttribute('id');
+    buttonId = parseInt(buttonId.substring(1), 10);
+    let results = data.results;
+    let residentsLinkArr;
+    for (let i = 0; i < results.length; i++) {
+        if (buttonId === i) {
+            residentsLinkArr = data.results[i].residents;
+        }
+    }
+    return residentsLinkArr;
+}
+
+
+function getResidentsData(residentsLinkArr){
+    let residentsData = [];
+    for(let link of residentsLinkArr){
+        residentsData.push(getDatabyRequest("GET", link));
+    }
+    return residentsData;
+}
+
+function addListenerButtonResident(data) {
+    let btnArr = document.getElementsByClassName('resident');
+    for (let btn of btnArr) {
+        btn.addEventListener("click", function handler() {
+            btn.setAttribute("style", "background-color: aqua");
+            let residentsLinkArr = getResidentsLink(data, btn);
+            let residentsData = getResidentsData(residentsLinkArr);
+
+            console.log(residentsLinkArr);
+
+            console.log(residentsData);
+
+
+        });
+
+    }
+
+
 }
 
 
 function main() {
-    getDatabyRequest();
+    getDatabyRequest("GET", 'https://swapi.co/api/planets/')
+        .then(renderHTML)
+        .then(addListenerButtonResident)
+        .catch(console.log("============"))
 }
 
 main();
