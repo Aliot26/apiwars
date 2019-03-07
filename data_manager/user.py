@@ -38,5 +38,26 @@ def registration(username, password):
         'username': username,
         'password': hashed_password
     }
-    user_data = db_user.add_user(user)
-    return user_data
+    try:
+        return db_user.add_user(user)
+    except Exception as e:
+        print(e)
+
+
+def get_user(username):
+    try:
+        return db_user.get_one_user(username)
+    except Exception as e:
+        print(e)
+
+
+def check_password(login_user):
+    username = login_user['username']
+    password_from_form = login_user['password']
+    if check_exists(username):
+        user_from_base = get_user(username)
+        password_from_base = user_from_base['password']
+        verify = password_manager.verify_password(password_from_form, password_from_base)
+        if verify:
+            return True
+        return False

@@ -30,5 +30,6 @@ def add_user(cursor, user_data):
                        {'username': user_data['username'],
                         'password': user_data['password']
                         })
+        return id
     except psycopg2.Error as e:
         print(e)
