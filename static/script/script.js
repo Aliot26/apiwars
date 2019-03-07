@@ -72,10 +72,6 @@ function renderHTML(data) {
     return data;
 }
 
-function renderModalWindowResident() {
-
-
-}
 
 
 function getResidentsLink(data, btn) {
