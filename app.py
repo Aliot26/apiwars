@@ -3,6 +3,7 @@ import requests
 import json
 from data_manager import user as user
 
+
 app = Flask(__name__)
 app.secret_key = "waw"
 
@@ -12,7 +13,6 @@ def route_index():
     pl = requests.get('https://swapi.co/api/planets/')
     plan = json.loads(pl.text)
     planets = plan['results']
-
     return render_template('index.html', planets=planets)
 
 
@@ -42,6 +42,7 @@ def route_registration():
     if user.registration(username, first_password):
         session['username'] = username
     return redirect('/')
+
 
 @app.route('/login', methods=['POST'])
 def route_login():
