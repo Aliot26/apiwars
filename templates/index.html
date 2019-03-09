@@ -7,29 +7,60 @@
         <li class="page-item"><a class="page-link" href="#">Next</a></li>
     </ul>
 </nav>
-<table class="table table-bordered" id="table-planets">
-    <thead id="table-head"></thead>
-    <tbody></tbody>
+
+<table class="table table-bordered" id="table-planets" >
+    <thead id="table-head">
+    <tr>
+        <td>Name</td>
+        <td>Diameter</td>
+        <td>Climate</td>
+        <td>Terrain</td>
+        <td>Surface Water Percentage</td>
+        <td>Population</td>
+        <td>Residants</td>
+        {% if session['username']%}
+        <td>Vote</td>
+        {%endif%}
+    </tr>
+    </thead>
+    <tbody>
+    {%if planets%}
+    {%for planet in planets%}
+    <tr>
+        <td class="name_planet">{{planet['name']}}</td>
+        <td class="diameter">{{planet['diameter']}}</td>
+        <td class="climate">{{planet['climate']}}</td>
+        <td class="terrain">{{planet['terrain']}}</td>
+        <td class="sur_water">{{planet['surface_water']}}</td>
+        <td class="population">{{planet['population']}}</td>
+        <td class="residents">{{planet['residents']}}</td>
+        {% if session['username']%}
+        <td>Vote</td>
+        {%endif%}
+    </tr>
+    {%endfor%}
+    {%endif%}
+    </tbody>
 </table>
 
 <!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <p>qqqqqqqqqqqqqqqq</p>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
-      </div>
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
     </div>
-  </div>
 </div>
 {% endblock %}

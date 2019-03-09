@@ -1,5 +1,6 @@
 from flask import Flask, render_template, url_for, escape, request, redirect, flash, session
-
+import requests
+import json
 from data_manager import user as user
 
 app = Flask(__name__)
@@ -8,7 +9,11 @@ app.secret_key = "waw"
 
 @app.route('/')
 def route_index():
-    return render_template('index.html')
+    pl = requests.get('https://swapi.co/api/planets/')
+    plan = json.loads(pl.text)
+    planets = plan['results']
+
+    return render_template('index.html', planets=planets)
 
 
 @app.route('/registration')
@@ -24,21 +29,19 @@ def route_registration():
 
     if not user.check_data_validate(username, first_password, second_password):
         flash('Please provide all data')
-        return redirect(url_for('show_register_form'))
+        return redirect(url_for('route_show_register_form'))
 
     if user.check_exists(username):
         flash('This username exists already')
-        return redirect(url_for('show_register_form'))
+        return redirect(url_for('route_show_register_form'))
 
     if not user.check_passwords_equal(first_password, second_password):
         flash('Passwords must be equal')
-        return redirect(url_for('show_register_form'))
+        return redirect(url_for('route_show_register_form'))
 
     if user.registration(username, first_password):
         session['username'] = username
-
-    return render_template('index.html', username=username)
-
+    return redirect('/')
 
 @app.route('/login', methods=['POST'])
 def route_login():
