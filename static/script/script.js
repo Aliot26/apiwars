@@ -2,8 +2,10 @@ function formateDataDiameter() {
     let arrData = document.getElementsByClassName('diameter');
     for (let i = 0; i < arrData.length; i++) {
         let text = arrData[i].textContent;
-        text = text.replace(/(\w+)(\w{3})/, "$1,$2 km");
-        arrData[i].textContent = text;
+        if (text !== "unknown") {
+            text = text.replace(/(\w+)(\w{3})/, "$1,$2 km");
+            arrData[i].textContent = text;
+        }
     }
 }
 
@@ -104,11 +106,6 @@ function getDatabyRequest(url) {
 // }
 //
 
-// function checkUserLogin(){
-//     let user_name = document.querySelector("span");
-//     let un = user_name.textContent;
-//     console.log(un);
-// }
 
 // function getResidentsLink(data, btn) {
 //     let buttonId = btn.getAttribute('id');
@@ -146,9 +143,13 @@ function getDataResidents(data) {
         getDatabyRequestAll(data[i])
         // .then(result => {aaar.append(data[i])})
             .then(console.log);
-
     }
 }
+
+function renderHTML(data) {
+
+}
+
 
 function getDatabyRequestAll(url) {
     return new Promise(function (resolve, reject) {

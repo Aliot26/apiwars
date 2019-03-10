@@ -3,18 +3,29 @@ import requests
 import json
 from data_manager import user as user
 
-
 app = Flask(__name__)
 app.secret_key = "waw"
 
 
 @app.route('/')
 def route_index():
-    pl = requests.get('https://swapi.co/api/planets/')
+    pl = requests.get('https://swapi.co/api/planets/?page=1')
     plan = json.loads(pl.text)
+    next_page = plan['next']
+    prev_page = plan['previous']
     planets = plan['results']
-    return render_template('index.html', planets=planets)
+    return render_template('index.html', planets=planets, next_page=next_page, prev_page=prev_page)
 
+
+@app.route('/pagination', methods=["POST"])
+def route_pagination():
+    link = request.form['link']
+    pl = requests.get(link)
+    plan = json.loads(pl.text)
+    next_page = plan['next']
+    prev_page = plan['previous']
+    planets = plan['results']
+    return render_template('index.html', planets=planets, next_page=next_page, prev_page=prev_page)
 
 @app.route('/registration')
 def route_show_register_form():

@@ -2,13 +2,22 @@
 {% block content %}
 <h1>Star Wars universe planets</h1>
 <nav aria-label="Page navigation example">
-    <ul class="pagination">
-        <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-        <li class="page-item"><a class="page-link" href="#">Next</a></li>
-    </ul>
+    <form action="/pagination" method="POST">
+        {%if prev_page == None %}
+        <button type="submit" name="link" class="btn btn-outline-secondary" value="{{prev_page}}" disabled>Previous
+        </button>
+        {%else%}
+        <button type="submit" name="link" class="btn btn-outline-secondary" value="{{prev_page}}">Previous</button>
+        {%endif%}
+        {%if next_page == None %}
+        <button type="submit" name="link" class="btn btn-outline-secondary" value="{{next_page}}" disabled>Next</button>
+        {%else%}
+        <button type="submit" name="link" class="btn btn-outline-secondary" value="{{next_page}}">Next</button>
+        {%endif%}
+    </form>
 </nav>
 
-<table class="table table-bordered" id="table-planets" >
+<table class="table table-bordered" id="table-planets">
     <thead id="table-head">
     <tr>
         <td>Name</td>
