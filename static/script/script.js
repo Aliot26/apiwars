@@ -135,48 +135,51 @@ function getLinkResidents(data) {
     return data['residents'];
 }
 
+
 function getDataResidents(data) {
     let urls = data;
-    console.log(data);
-    let aaar = [];
+    let dataResidents = [];
     for (let i = 0; i < data.length; i++) {
-        getDatabyRequestAll(data[i])
-        // .then(result => {aaar.append(data[i])})
-            .then(console.log);
+        getDatabyRequest(data[i])
+            .then(renderHTML);
     }
 }
 
+
 function renderHTML(data) {
-
-}
-
-
-function getDatabyRequestAll(url) {
-    return new Promise(function (resolve, reject) {
-        let xhr = new XMLHttpRequest();
-        xhr.open("GET", url);
-        xhr.onload = function () {
-            if (xhr.status === 200) {
-                let data = JSON.parse(xhr.responseText);
-                resolve(data);
-            } else {
-                reject(console.log("We connected to the server, but it returned an error"));
-            }
-        };
-        xhr.send();
-    });
+    let popupTable = document.getElementById('table-body');
+    let newRow = `<tr><td>${data.name} </td>
+            <td>${data.height}</td>
+            <td>${data.mass}</td>
+            <td>${data.hair_color}</td>
+            <td>${data.skin_color}</td>
+            <td>${data.eye_color}</td>
+            <td>${data.birth_year}</td>
+            <td>${data.gender}</td>`;
+    popupTable.insertAdjacentHTML('beforeend', newRow);
 }
 
 function popUp() {
-    let popUpWindow = document.getElementById('popup');
-    let popUpClose = document.querySelector(".close");
 
-    popUpWindow.style.display = "block";
-    popUpClose.onclick = function () {
+    let popUpWindow = document.getElementById('popup');
+    let popUpClose = document.getElementsByClassName("close");
+    let tableBody = document.getElementById('table-body');
+    if (popUpWindow.style.display === "block") {
         popUpWindow.style.display = "none";
-    };
+    }
+    popUpWindow.style.display = "block";
+
+    console.log(popUpClose);
+    for (let i = 0; i < popUpClose.length; i++) {
+        popUpClose[i].addEventListener("click", function () {
+            tableBody.innerHTML = "";
+            popUpWindow.style.display = "none";
+        })
+    }
+
     window.onclick = function (e) {
         if (e.target === popUpWindow) {
+            tableBody.innerHTML = "";
             popUpWindow.style.display = "none";
         }
     }
@@ -188,13 +191,14 @@ function addListenerButtonResident() {
     for (let btn of btnArr) {
         btn.addEventListener("click", function handler() {
             popUp(btn);
-            console.log();
-            btn.setAttribute("style", "background-color: aqua");
+            let namePlanet = btn.parentElement.parentElement.firstElementChild.textContent;
+            let popupHeader = document.getElementById('popup-header');
+            popupHeader.textContent = `Residents of ${namePlanet}`;
+            console.log(namePlanet);
             let url = btn.parentElement.getAttribute('url_pl');
             getDatabyRequest(url)
                 .then(getLinkResidents)
                 .then(getDataResidents);
-
 
         });
 
