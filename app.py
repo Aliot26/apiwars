@@ -9,12 +9,7 @@ app.secret_key = "waw"
 
 @app.route('/')
 def route_index():
-    pl = requests.get('https://swapi.co/api/planets/?page=1')
-    plan = json.loads(pl.text)
-    next_page = plan['next']
-    prev_page = plan['previous']
-    planets = plan['results']
-    return render_template('index.html', planets=planets, next_page=next_page, prev_page=prev_page)
+    return render_template('index.html')
 
 
 @app.route('/pagination', methods=["POST"])

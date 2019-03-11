@@ -1,6 +1,6 @@
 function formateDataDiameter() {
     let arrData = document.getElementsByClassName('diameter');
-    for (let i = 0; i < arrData.length; i++) {
+    for (let i = 1; i < arrData.length; i++) {
         let text = arrData[i].textContent;
         if (text !== "unknown") {
             text = text.replace(/(\w+)(\w{3})/, "$1,$2 km");
@@ -11,7 +11,7 @@ function formateDataDiameter() {
 
 function formateDataPopulation() {
     let arrData = document.getElementsByClassName('population');
-    for (let i = 0; i < arrData.length; i++) {
+    for (let i = 1; i < arrData.length; i++) {
         let text = arrData[i].textContent;
         if (text !== "unknown") {
             text = text.replace(/(\d)(?=(\d{3})+([^\d]|$))/g, "$1,") + " people";
@@ -21,8 +21,8 @@ function formateDataPopulation() {
 }
 
 function formateDataSurface() {
-    let arrData = document.getElementsByClassName('sur_water');
-    for (let i = 0; i < arrData.length; i++) {
+    let arrData = document.getElementsByClassName('surface_water');
+    for (let i = 1; i < arrData.length; i++) {
         let text = arrData[i].textContent;
         if (text !== "unknown") {
             text = text + "%";
@@ -33,19 +33,37 @@ function formateDataSurface() {
 
 function formateDataResidents() {
     let arrData = document.getElementsByClassName('residents');
-    for (let i = 0; i < arrData.length; i++) {
+    for (let i = 1; i < arrData.length; i++) {
         let text = arrData[i].textContent;
-        if (text === '[]') {
+        if (text === "") {
             text = "No known residents";
             arrData[i].textContent = text;
         } else {
-            let arrText = text.split(', ');
+            let arrText = text.split(',');
             let count = arrText.length;
             arrData[i].textContent = count;
             arrData[i].innerHTML = `<button id="r${i}" type="button" class="btn btn-outline-secondary resident">${count} resident(s)</button>`;
         }
     }
 }
+
+function formateDataGender(gender) {
+    switch (gender) {
+        case 'male':
+            gender = '<i class=\"fas fa-mars\"></i>';
+            break;
+        case 'female':
+            gender = '<i class="fas fa-venus"></i>';
+            break;
+        case 'n/a':
+            gender = '<i class="fas fa-genderless"></i>';
+            break;
+        default:
+            gender = 'unknown';
+
+    }return gender
+}
+
 
 function getDatabyRequest(url) {
     return new Promise(function (resolve, reject) {
@@ -63,6 +81,65 @@ function getDatabyRequest(url) {
     });
 }
 
+function getDatabyToIndexPageRequest(url) {
+    let xhr = new XMLHttpRequest();
+    xhr.open("GET", url);
+    xhr.onload = function () {
+        if (xhr.status === 200) {
+            let data = JSON.parse(xhr.responseText);
+            renderTablePlanets(data);
+            formateDataDiameter();
+            formateDataPopulation();
+            formateDataSurface();
+            formateDataResidents();
+            addListenerButtonResident();
+        } else {
+            console.log("We connected to the server, but it returned an error");
+        }
+    };
+    xhr.send();
+
+}
+
+function renderTablePlanets(data) {
+    let results = data.results;
+    let headersList = {
+        "name": "Name",
+        "diameter": "Diameter",
+        "climate": "Climate",
+        "terrain": "Terrain",
+        "surface_water": "Surface Water Percentage",
+        "population": "Population",
+        "residents": "Residents"
+    };
+    let tablePlanet = document.getElementById("table-planets");
+    tablePlanet.innerHTML = "";
+    let rowInTable = document.createElement('tr');
+
+    for (let item in headersList) {
+        let cellInTable = document.createElement('td');
+        cellInTable.classList.add(item);
+        cellInTable.innerHTML = headersList[item];
+        rowInTable.appendChild(cellInTable);
+    }
+    tablePlanet.appendChild(rowInTable);
+
+    for (let i = 0; i < results.length; i++) {
+        let rowInTable = document.createElement('tr');
+        for (let item in headersList) {
+            let cellInTable = document.createElement('td');
+            cellInTable.classList.add(item);
+            if(cellInTable.className === "residents"){
+                cellInTable.setAttribute('url_pl', results[i]['url']);
+            }
+            cellInTable.innerHTML = results[i][item];
+            rowInTable.appendChild(cellInTable);
+        }
+        tablePlanet.appendChild(rowInTable);
+    }
+}
+
+
 // function sendData(data) {
 //     console.log(data);
 //     let results = data.results;
@@ -74,7 +151,7 @@ function getDatabyRequest(url) {
 // }
 //
 //
-// function renderTableHeader() {
+// function renderTablePlanets() {
 //     let tableHeaderArr = ['Name', 'Diameter', 'Climate', 'Terrain',
 //         'Surface Water Percentage', 'Population', 'Residants', 'Vote'];
 //     let headerRow = "";
@@ -87,7 +164,7 @@ function getDatabyRequest(url) {
 //
 // function renderHTML(data) {
 //     let tablePlanet = document.getElementById('table-planets');
-//     tablePlanet.insertAdjacentHTML('beforeend', renderTableHeader());
+//     tablePlanet.insertAdjacentHTML('beforeend', renderTablePlanets());
 //     let results = data.results;
 //     let newRow = "";
 //     for (let i = 0; i < results.length; i++) {
@@ -105,30 +182,6 @@ function getDatabyRequest(url) {
 //     return data;
 // }
 //
-
-
-// function getResidentsLink(data, btn) {
-//     let buttonId = btn.getAttribute('id');
-//     buttonId = parseInt(buttonId.substring(1), 10);
-//     let results = data.results;
-//     let residentsLinkArr;
-//     for (let i = 0; i < results.length; i++) {
-//         if (buttonId === i) {
-//             residentsLinkArr = data.results[i].residents;
-//         }
-//     }
-//     return residentsLinkArr;
-// }
-//
-//
-// function getResidentsData(residentsLinkArr) {
-//     let residentsData = [];
-//     for (let link of residentsLinkArr) {
-//         residentsData = getDatabyRequest("GET", link);
-//
-//     }
-//     return residentsData;
-// }
 
 
 function getLinkResidents(data) {
@@ -155,7 +208,7 @@ function renderHTML(data) {
             <td>${data.skin_color}</td>
             <td>${data.eye_color}</td>
             <td>${data.birth_year}</td>
-            <td>${data.gender}</td>`;
+            <td>${formateDataGender(data.gender)}</td>`;
     popupTable.insertAdjacentHTML('beforeend', newRow);
 }
 
@@ -203,22 +256,8 @@ function addListenerButtonResident() {
         });
 
     }
-
-
 }
 
-
 window.onload = function main() {
-    formateDataDiameter();
-    formateDataPopulation();
-    formateDataSurface();
-    formateDataResidents();
-    addListenerButtonResident();
-    // getDatabyRequest()
-    //     .then(sendData)
-    // .then(renderHTML)
-    // .then(addListenerButtonResident)
-    // .catch(console.log("============"))
-
-
+    getDatabyToIndexPageRequest('https://swapi.co/api/planets/?page=1');
 };

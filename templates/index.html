@@ -18,21 +18,21 @@
 </nav>
 
 <table class="table table-bordered" id="table-planets">
-    <thead id="table-head">
+
     <tr>
-        <td>Name</td>
-        <td>Diameter</td>
-        <td>Climate</td>
-        <td>Terrain</td>
-        <td>Surface Water Percentage</td>
-        <td>Population</td>
-        <td>Residants</td>
-        {% if session['username']%}
-        <td>Vote</td>
-        {%endif%}
+        <!--<td>Name</td>-->
+        <!--<td>Diameter</td>-->
+        <!--<td>Climate</td>-->
+        <!--<td>Terrain</td>-->
+        <!--<td>Surface Water Percentage</td>-->
+        <!--<td>Population</td>-->
+        <!--<td>Residants</td>-->
+        <!--{% if session['username']%}-->
+        <!--<td>Vote</td>-->
+        <!--{%endif%}-->
     </tr>
-    </thead>
-    <tbody>
+
+
     {%if planets%}
     {%for planet in planets%}
     <tr>
@@ -49,7 +49,7 @@
     </tr>
     {%endfor%}
     {%endif%}
-    </tbody>
+
 </table>
 
 <!-- Modal -->
