@@ -1,7 +1,7 @@
-function getDatabyRequest(url) {
+function getDatabyRequest(urlPlanet) {
     return new Promise(function (resolve, reject) {
         let xhr = new XMLHttpRequest();
-        xhr.open("GET", url);
+        xhr.open("GET", urlPlanet);
         xhr.onload = function () {
             if (xhr.status === 200) {
                 let data = JSON.parse(xhr.responseText);
@@ -25,7 +25,6 @@ function popUp() {
     }
     popUpWindow.style.display = "block";
 
-    console.log(popUpClose);
     for (let i = 0; i < popUpClose.length; i++) {
         popUpClose[i].addEventListener("click", function () {
             tableBody.innerHTML = "";
@@ -157,7 +156,23 @@ function formateDataResidents() {
     }
 }
 
+function addListenerPaginator(){
+
+}
+
+function addPaginatorButtons(data){
+    let previousLink = data.previous;
+    let nextLink = data.next;
+    let prevBtn = document.getElementById('prev-link');
+    prevBtn.setAttribute('data-url', previousLink);
+    let nextBtn = document.getElementById('next-link');
+    nextBtn.setAttribute('data-url',nextLink);
+}
+
 function getDataByRequestToIndexPage(url) {
+    if(url === undefined ){
+        url = 'https://swapi.co/api/planets/?page=1';
+    }
     let xhr = new XMLHttpRequest();
     xhr.open("GET", url);
     xhr.onload = function () {
@@ -165,6 +180,7 @@ function getDataByRequestToIndexPage(url) {
             let data = JSON.parse(xhr.responseText);
             renderTablePlanets(data);
             addListenerButtonResident();
+            addPaginatorButtons(data);
         } else {
             console.log("We connected to the server, but it returned an error");
         }
@@ -226,5 +242,5 @@ function renderTablePlanets(data) {
 }
 
 window.onload = function main() {
-    getDataByRequestToIndexPage('https://swapi.co/api/planets/?page=1');
+    getDataByRequestToIndexPage();
 };
