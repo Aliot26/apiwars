@@ -19,37 +19,6 @@
 
 <table class="table table-bordered" id="table-planets">
 
-    <tr>
-        <!--<td>Name</td>-->
-        <!--<td>Diameter</td>-->
-        <!--<td>Climate</td>-->
-        <!--<td>Terrain</td>-->
-        <!--<td>Surface Water Percentage</td>-->
-        <!--<td>Population</td>-->
-        <!--<td>Residants</td>-->
-        <!--{% if session['username']%}-->
-        <!--<td>Vote</td>-->
-        <!--{%endif%}-->
-    </tr>
-
-
-    {%if planets%}
-    {%for planet in planets%}
-    <tr>
-        <td class="name_planet">{{planet['name']}}</td>
-        <td class="diameter">{{planet['diameter']}}</td>
-        <td class="climate">{{planet['climate']}}</td>
-        <td class="terrain">{{planet['terrain']}}</td>
-        <td class="sur_water">{{planet['surface_water']}}</td>
-        <td class="population">{{planet['population']}}</td>
-        <td class="residents" url_pl="{{planet['url']}}">{{planet['residents']}}</td>
-        {% if session['username']%}
-        <td>Vote</td>
-        {%endif%}
-    </tr>
-    {%endfor%}
-    {%endif%}
-
 </table>
 
 <!-- Modal -->
