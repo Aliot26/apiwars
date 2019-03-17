@@ -1,22 +1,4 @@
-function getDatabyRequest(urlPlanet) {
-    return new Promise(function (resolve, reject) {
-        let xhr = new XMLHttpRequest();
-        xhr.open("GET", urlPlanet);
-        xhr.onload = function () {
-            if (xhr.status === 200) {
-                let data = JSON.parse(xhr.responseText);
-                resolve(data);
-            } else {
-                reject(console.log("We connected to the server, but it returned an error"));
-            }
-        };
-        xhr.send();
-    });
-}
-
-
 function popUp() {
-
     let popUpWindow = document.getElementById('popup');
     let popUpClose = document.getElementsByClassName("close");
     let tableBody = document.getElementById('table-body');
@@ -39,6 +21,24 @@ function popUp() {
         }
     }
 }
+
+
+function getDatabyRequest(urlPlanet) {
+    return new Promise(function (resolve, reject) {
+        let xhr = new XMLHttpRequest();
+        xhr.open("GET", urlPlanet);
+        xhr.onload = function () {
+            if (xhr.status === 200) {
+                let data = JSON.parse(xhr.responseText);
+                resolve(data);
+            } else {
+                reject(console.log("We connected to the server, but it returned an error"));
+            }
+        };
+        xhr.send();
+    });
+}
+
 
 function getLinkResidents(data) {
     return data['residents'];
@@ -68,12 +68,14 @@ function renderResidentsWindow(data) {
     popupTable.insertAdjacentHTML('beforeend', newRow);
 }
 
+
 function displayNamePlanetIntoResidentsWindow(btn) {
     let namePlanet = btn.closest('tr').firstElementChild.textContent;
     let popupHeader = document.getElementById('popup-header');
     popupHeader.textContent = `Residents of ${namePlanet}`;
     return btn.parentElement.getAttribute('url_pl');
 }
+
 
 function addListenerButtonResident() {
     let btnArr = document.getElementsByClassName('resident');
@@ -85,9 +87,9 @@ function addListenerButtonResident() {
                 .then(getLinkResidents)
                 .then(getDataResidents);
         });
-
     }
 }
+
 
 function formateDataGender(gender) {
     switch (gender) {
@@ -107,6 +109,7 @@ function formateDataGender(gender) {
     return gender
 }
 
+
 function formateDataDiameter() {
     let arrData = document.getElementsByClassName('diameter');
     for (let i = 1; i < arrData.length; i++) {
@@ -117,6 +120,7 @@ function formateDataDiameter() {
         }
     }
 }
+
 
 function formateDataPopulation() {
     let arrData = document.getElementsByClassName('population');
@@ -129,6 +133,7 @@ function formateDataPopulation() {
     }
 }
 
+
 function formateDataSurface() {
     let arrData = document.getElementsByClassName('surface_water');
     for (let i = 1; i < arrData.length; i++) {
@@ -139,6 +144,7 @@ function formateDataSurface() {
         }
     }
 }
+
 
 function formateDataResidents() {
     let arrData = document.getElementsByClassName('residents');
@@ -156,36 +162,47 @@ function formateDataResidents() {
     }
 }
 
-function addListenerPaginator(){
+function addListenerPaginator() {
+    let paginationBtnArr = document.querySelectorAll('.btn-paginator');
+    for (let pagBtn of paginationBtnArr) {
+        pagBtn.addEventListener('click', function () {
+            let url = pagBtn.dataset.url;
+            getDataByRequestToIndexPage(url)
+                .then(renderTablePlanets)
+                .then(addListenerButtonResident);
 
+        })
+    }
 }
 
-function addPaginatorButtons(data){
+
+function addPaginatorButtons(data) {
     let previousLink = data.previous;
     let nextLink = data.next;
     let prevBtn = document.getElementById('prev-link');
     prevBtn.setAttribute('data-url', previousLink);
     let nextBtn = document.getElementById('next-link');
-    nextBtn.setAttribute('data-url',nextLink);
+    nextBtn.setAttribute('data-url', nextLink);
 }
 
+
 function getDataByRequestToIndexPage(url) {
-    if(url === undefined ){
+    if (url === undefined) {
         url = 'https://swapi.co/api/planets/?page=1';
     }
-    let xhr = new XMLHttpRequest();
-    xhr.open("GET", url);
-    xhr.onload = function () {
-        if (xhr.status === 200) {
-            let data = JSON.parse(xhr.responseText);
-            renderTablePlanets(data);
-            addListenerButtonResident();
-            addPaginatorButtons(data);
-        } else {
-            console.log("We connected to the server, but it returned an error");
-        }
-    };
-    xhr.send();
+    return new Promise(function (resolve, reject) {
+        let xhr = new XMLHttpRequest();
+        xhr.open("GET", url);
+        xhr.onload = function () {
+            if (xhr.status === 200) {
+                let data = JSON.parse(xhr.responseText);
+                resolve(data);
+            } else {
+                reject(console.log("We connected to the server, but it returned an error"));
+            }
+        };
+        xhr.send();
+    });
 }
 
 function renderHeaderTablePlanets(headersList) {
@@ -198,6 +215,7 @@ function renderHeaderTablePlanets(headersList) {
     }
     return rowInTable
 }
+
 
 function renderBodyTablePlanets(headersList, tablePlanet, results) {
     for (let i = 0; i < results.length; i++) {
@@ -219,7 +237,9 @@ function renderBodyTablePlanets(headersList, tablePlanet, results) {
     formateDataResidents();
 }
 
+
 function renderTablePlanets(data) {
+    addPaginatorButtons(data);
     let results = data.results;
     let headersList = {
         "name": "Name",
@@ -234,13 +254,18 @@ function renderTablePlanets(data) {
     tablePlanet.innerHTML = "";
 
     let headerRow = renderHeaderTablePlanets(headersList);
-
     tablePlanet.appendChild(headerRow);
 
     renderBodyTablePlanets(headersList, tablePlanet, results)
-
 }
 
-window.onload = function main() {
-    getDataByRequestToIndexPage();
-};
+
+// window.onload = function main() {
+//     getDataByRequestToIndexPage()
+//         .then(renderTablePlanets)
+//         .then(addListenerButtonResident);
+//      addListenerPaginator();
+//     // renderTablePlanets(data);
+//     // addListenerButtonResident();
+//     // addPaginatorButtons(data);
+// };
