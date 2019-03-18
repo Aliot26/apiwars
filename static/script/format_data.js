@@ -1,4 +1,4 @@
-export {formatDataDiameter,formatDataPopulation, formatDataSurface, formatDataResidents}
+export {formatDataDiameter,formatDataPopulation, formatDataSurface, formatDataResidents, formatDataGender}
 
 function formatDataDiameter() {
     let arrData = document.getElementsByClassName('diameter');
@@ -50,4 +50,22 @@ function formatDataResidents() {
             arrData[i].innerHTML = `<button id="r${i}" type="button" class="btn btn-outline-secondary resident">${count} resident(s)</button>`;
         }
     }
+}
+
+
+function formatDataGender(gender) {
+    switch (gender) {
+        case 'male':
+            gender = '<i class="fas fa-mars"></i>';
+            break;
+        case 'female':
+            gender = '<i class="fas fa-venus"></i>';
+            break;
+        case 'n/a':
+            gender = '<i class="fas fa-genderless"></i>';
+            break;
+        default:
+            gender = 'unknown';
+    }
+    return gender;
 }

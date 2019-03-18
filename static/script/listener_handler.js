@@ -1,3 +1,5 @@
+import { dataHandler } from "./data_handler.js";
+import {dom} from "./dom.js";
 export {addListenerButtonResident, displayNamePlanetIntoResidentsWindow};
 
 
@@ -7,6 +9,9 @@ function addListenerButtonResident() {
         btn.addEventListener("click", function handler() {
             popUpResidents();
             let urlPlanet = displayNamePlanetIntoResidentsWindow(btn);
+            dataHandler.getUrlResidents(urlPlanet);
+            dataHandler.loadResidents();
+            dom.loadResidentsTable();
         });
     }
 }

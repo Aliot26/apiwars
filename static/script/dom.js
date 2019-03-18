@@ -1,5 +1,6 @@
 import {dataHandler} from "./data_handler.js";
 import{createTablePlanets} from "./planets.js";
+import{createTableResidents} from "./residents.js";
 
 export {dom}
 
@@ -11,10 +12,15 @@ let dom = {
         createTablePlanets(data);
     },
     
-    loadResidentTable: function () {
-        
-    }
+    loadResidentsTable: function () {
+        dataHandler.getResidentsTable(this.showResidentsModal);
+    },
 
-    
+    showResidentsModal: function (dataResidents) {
+        setTimeout(function () {
+           createTableResidents(dataResidents);
+        },1000)
+
+    }
     
 };

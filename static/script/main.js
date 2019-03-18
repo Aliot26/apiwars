@@ -10,7 +10,7 @@ function init() {
         dom.loadTable();
         addListenerButtonResident();
 
-    }, 1000);
+    }, 2000);
 
 }
 
