@@ -3,14 +3,16 @@ export {dataHandler}
 let dataHandler = {
     _dataPlanets: {},
     _dataResidents: {},
+    _status: {},
     loadData: function (url) {
         if (url === undefined) {
             url = 'https://swapi.co/api/planets/?page=1';
         }
+        this._dataResidents = {};
         let xhr = new XMLHttpRequest();
         xhr.open("GET", url);
-        xhr.onload = function () {
-            if (xhr.status === 200) {
+        xhr.onreadystatechange = function () {
+            if (xhr.status === 200 && xhr.readyState === 4) {
                 dataHandler._dataPlanets = JSON.parse(xhr.responseText);
             } else {
                 console.log("We connected to the server, but it returned an error");
@@ -62,6 +64,13 @@ let dataHandler = {
     getResidentsTable: function (callback) {
         let residents = this._dataResidents;
         callback(residents);
+    },
+
+    getUsername: function (username) {
+        let matches = document.cookie.match(new RegExp(
+            "(?:^|; )" + username.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
+        ));
+        return matches ? decodeURIComponent(matches[1]) : undefined;
     }
 
 };

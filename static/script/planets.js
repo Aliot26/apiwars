@@ -1,10 +1,11 @@
-import {formatDataDiameter, formatDataPopulation, formatDataSurface, formatDataResidents} from "./format_data.js";
+import {formatDataDiameter, formatDataPopulation, formatDataSurface, formatDataResidents, createVoteButton} from "./format_data.js";
+import {dataHandler} from "./data_handler.js";
 
 export {createTablePlanets};
 
 
 function createTablePlanets(data) {
-
+    addPaginatorButtons(data);
     let results = data.results;
     let headersList = {
         "name": "Name",
@@ -15,6 +16,9 @@ function createTablePlanets(data) {
         "population": "Population",
         "residents": "Residents"
     };
+    if (dataHandler.getUsername('username') !== undefined) {
+        headersList['vote'] = "Vote";
+    }
     let tablePlanet = document.getElementById("table-planets");
     tablePlanet.innerHTML = "";
 
@@ -36,7 +40,7 @@ function renderHeaderTablePlanets(headersList) {
 }
 
 function renderBodyTablePlanets(headersList, tablePlanet, results) {
-     for (let i = 0; i < results.length; i++) {
+    for (let i = 0; i < results.length; i++) {
         let rowInTable = document.createElement('tr');
         for (let item in headersList) {
             let cellInTable = document.createElement('td');
@@ -47,10 +51,24 @@ function renderBodyTablePlanets(headersList, tablePlanet, results) {
             cellInTable.innerHTML = results[i][item];
             rowInTable.appendChild(cellInTable);
         }
+
         tablePlanet.appendChild(rowInTable);
     }
+
     formatDataDiameter();
     formatDataPopulation();
     formatDataSurface();
     formatDataResidents();
+    createVoteButton();
+}
+
+
+
+function addPaginatorButtons(data) {
+    let previousLink = data.previous;
+    let nextLink = data.next;
+    let prevBtn = document.getElementById('prev-link');
+    prevBtn.setAttribute('data-url', previousLink);
+    let nextBtn = document.getElementById('next-link');
+    nextBtn.setAttribute('data-url', nextLink);
 }

@@ -1,4 +1,4 @@
-export {formatDataDiameter,formatDataPopulation, formatDataSurface, formatDataResidents, formatDataGender}
+export {formatDataDiameter,formatDataPopulation, formatDataSurface, formatDataResidents, formatDataGender, createVoteButton}
 
 function formatDataDiameter() {
     let arrData = document.getElementsByClassName('diameter');
@@ -68,4 +68,22 @@ function formatDataGender(gender) {
             gender = 'unknown';
     }
     return gender;
+}
+
+
+function createVoteButton() {
+    let btnArr = document.getElementsByClassName("vote");
+    for (let cell of btnArr) {
+        if (cell.textContent === 'undefined') {
+            cell.textContent = "";
+        }
+    }
+    for (let j = 1; j < btnArr.length; j++) {
+        let btn = document.createElement('button');
+        btn.classList.add("btn-outline-secondary", "btn");
+        btn.setAttribute("data-id-vote", "vote" + j);
+        btn.setAttribute("type", "submit");
+        btn.textContent = "Vote";
+        btnArr[j].appendChild(btn);
+    }
 }
