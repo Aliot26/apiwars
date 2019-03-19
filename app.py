@@ -1,9 +1,9 @@
-from flask import Flask, render_template, url_for, escape, request, redirect, flash, session
-import requests
-import json
+from flask import Flask, render_template, url_for, escape, request, redirect, flash, session, make_response
+from http import cookies
 from data_manager import user as user
 
 app = Flask(__name__)
+# app.config['SESSION_COOKIE_HTTPONLY'] = False
 app.secret_key = "waw"
 
 
@@ -11,16 +11,6 @@ app.secret_key = "waw"
 def route_index():
     return render_template('index.html')
 
-
-# @app.route('/pagination', methods=["POST"])
-# def route_pagination():
-#     link = request.form['link']
-#     pl = requests.form.get(link)
-#     plan = json.loads(pl.text)
-#     next_page = plan['next']
-#     prev_page = plan['previous']
-#     planets = plan['results']
-#     return render_template('index.html', planets=planets, next_page=next_page, prev_page=prev_page)
 
 @app.route('/registration')
 def route_show_register_form():
@@ -58,7 +48,9 @@ def route_login():
     }
     if user.check_password(login_user):
         session['username'] = login_user['username']
-        return redirect('/')
+        resp = make_response(render_template('index.html'))
+        resp.set_cookie('username', session['username'] )
+        return resp
 
     if user.check_exists(login_user['username']):
         flash("Incorrect password")
@@ -70,8 +62,11 @@ def route_login():
 
 @app.route('/logout')
 def route_logout():
-    del session['username']
-    return redirect('/')
+    session.pop('username', None)
+    res = make_response(render_template('index.html'))
+    res.set_cookie('username',  expires=0)
+
+    return res
 
 
 if __name__ == "__main__":
