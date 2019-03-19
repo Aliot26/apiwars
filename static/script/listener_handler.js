@@ -1,6 +1,7 @@
-import { dataHandler } from "./data_handler.js";
+import {dataHandler} from "./data_handler.js";
 import {dom} from "./dom.js";
-export {addListenerButtonResident, displayNamePlanetIntoResidentsWindow};
+
+export {addListenerButtonResident, displayNamePlanetIntoResidentsWindow, addListenerPaginator};
 
 
 function addListenerButtonResident() {
@@ -48,3 +49,24 @@ function popUpResidents() {
         }
     }
 }
+
+
+function addListenerPaginator() {
+    let paginationBtnArr = document.querySelectorAll('.btn-paginator');
+    for (let pagBtn of paginationBtnArr) {
+        pagBtn.addEventListener('click', function () {
+            let url = pagBtn.dataset.url;
+            dataHandler.loadData(url);
+            setTimeout(function () {
+                dom.loadTable();
+                addListenerButtonResident();
+                addListenerPaginator();
+            }, 2000);
+        })
+    }
+}
+
+
+
+
+

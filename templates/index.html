@@ -4,56 +4,13 @@
 <nav aria-label="Page navigation example">
 <button type="button" id="prev-link" class="btn btn-outline-secondary btn-paginator">Previous</button>
 <button type="button" id="next-link" class="btn btn-outline-secondary btn-paginator">Next</button>
-
-    <!--<form action="/pagination" method="POST">-->
-        <!--{%if prev_page == None %}-->
-        <!--<button type="submit" name="link" class="btn btn-outline-secondary" value="{{prev_page}}" disabled>Previous-->
-        <!--</button>-->
-        <!--{%else%}-->
-        <!--<button type="submit" name="link" class="btn btn-outline-secondary" value="{{prev_page}}">Previous</button>-->
-        <!--{%endif%}-->
-        <!--{%if next_page == None %}-->
-        <!--<button type="submit" name="link" class="btn btn-outline-secondary" value="{{next_page}}" disabled>Next</button>-->
-        <!--{%else%}-->
-        <!--<button type="submit" name="link" class="btn btn-outline-secondary" value="{{next_page}}">Next</button>-->
-        <!--{%endif%}-->
-    <!--</form>-->
 </nav>
 
 <table class="table table-bordered" id="table-planets">
 
 </table>
 
-<!-- Modal -->
-<div id="popup" class="popup">
-    <div class="popup-content">
-        <div class="popup-header">
-            <h3 id="popup-header"></h3>
-            <span class="close">&times;</span>
-        </div>
-        <hr>
-        <div class="popup-body">
-            <table class="table table-bordered">
-                <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Height</th>
-                    <th>Mass</th>
-                    <th>Hair color</th>
-                    <th>Skin color</th>
-                    <th>Eye color</th>
-                    <th>Birth year</th>
-                    <th>Gender</th>
-                </tr>
-                </thead>
-                <tbody id="table-body"></tbody>
-            </table>
-        </div>
-        <hr>
-        <div class="popup-footer">
-            <p><button class="btn btn-outline-secondary close">Close</button></p>
-        </div>
-    </div>
-</div>
+{% include 'residents_modal.html' %}
+
 
 {% endblock %}
