@@ -1,5 +1,12 @@
-import {formatDataDiameter, formatDataPopulation, formatDataSurface, formatDataResidents, createVoteButton} from "./format_data.js";
+import {
+    formatDataDiameter,
+    formatDataPopulation,
+    formatDataSurface,
+    formatDataResidents,
+    createVoteButton
+} from "./format_data.js";
 import {dataHandler} from "./data_handler.js";
+import {addListenerButtonResident, addListenerPaginator, addListenerVoteButton} from "./listener_handler.js";
 
 export {createTablePlanets};
 
@@ -60,8 +67,10 @@ function renderBodyTablePlanets(headersList, tablePlanet, results) {
     formatDataSurface();
     formatDataResidents();
     createVoteButton();
+    addListenerButtonResident();
+    addListenerVoteButton();
+    addListenerPaginator();
 }
-
 
 
 function addPaginatorButtons(data) {

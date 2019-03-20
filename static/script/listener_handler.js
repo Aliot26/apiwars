@@ -1,7 +1,8 @@
 import {dataHandler} from "./data_handler.js";
 import {dom} from "./dom.js";
+import {getIdFromUrl} from "./format_data.js";
 
-export {addListenerButtonResident, displayNamePlanetIntoResidentsWindow, addListenerPaginator};
+export {addListenerButtonResident, addListenerPaginator, addListenerVoteButton};
 
 
 function addListenerButtonResident() {
@@ -59,13 +60,28 @@ function addListenerPaginator() {
             dataHandler.loadData(url);
             setTimeout(function () {
                 dom.loadTable();
-                addListenerButtonResident();
-                addListenerPaginator();
             }, 2000);
         })
     }
 }
 
+
+function addListenerVoteButton(){
+    let voteBtnArr = document.getElementsByClassName('vote-btn');
+    for (let btn of voteBtnArr){
+        btn.addEventListener('click', function () {
+            console.log(getNamePlanetToVote(btn))
+        })
+    }
+}
+
+function getNamePlanetToVote(btn) {
+    let namePlanet = btn.closest('tr').firstElementChild.textContent;
+    let urlPlanet = btn.parentElement.previousSibling.getAttribute('url_pl');
+    console.log(urlPlanet);
+    getIdFromUrl(urlPlanet);
+    return namePlanet;
+}
 
 
 
