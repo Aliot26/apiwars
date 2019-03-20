@@ -1,9 +1,8 @@
-from flask import Flask, render_template, url_for, escape, request, redirect, flash, session, make_response
+from flask import Flask, render_template, url_for, escape, request, redirect, flash, session, make_response, jsonify
 from http import cookies
 from data_manager import user as user
 
 app = Flask(__name__)
-# app.config['SESSION_COOKIE_HTTPONLY'] = False
 app.secret_key = "waw"
 
 
@@ -65,8 +64,17 @@ def route_logout():
     session.pop('username', None)
     res = make_response(render_template('index.html'))
     res.set_cookie('username',  expires=0)
-
     return res
+
+
+@app.route('/vote', methods=["POST"])
+def route_vote():
+    content = request.json
+    print(content)
+    return jsonify()
+
+
+
 
 
 if __name__ == "__main__":

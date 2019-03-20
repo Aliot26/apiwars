@@ -71,6 +71,22 @@ let dataHandler = {
             "(?:^|; )" + username.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
         ));
         return matches ? decodeURIComponent(matches[1]) : undefined;
+    },
+
+    sendVoteData: function (params) {
+
+        let xhr = new XMLHttpRequest();
+        xhr.open("POST", "/vote");
+        xhr.setRequestHeader("Content-type", "application/json");
+        xhr.onreadystatechange = function () {
+            if (xhr.status === 200 && xhr.readyState === 4) {
+
+                console.log(params);
+            } else {
+                console.log("We connected to the server, but it returned an error");
+            }
+        };
+        xhr.send(JSON.stringify(params));
     }
 
 };

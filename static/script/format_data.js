@@ -96,8 +96,8 @@ function createVoteButton() {
 
 
 function getIdFromUrl(url) {
-    let idPlanet = url.match(/\d+/g);
-    console.log(idPlanet);
+    let idPlanet = url.match(/\d+/);
+    idPlanet = idPlanet.join();
     return idPlanet;
 }
 

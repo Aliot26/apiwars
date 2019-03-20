@@ -66,21 +66,33 @@ function addListenerPaginator() {
 }
 
 
-function addListenerVoteButton(){
+function addListenerVoteButton() {
     let voteBtnArr = document.getElementsByClassName('vote-btn');
-    for (let btn of voteBtnArr){
+    for (let btn of voteBtnArr) {
         btn.addEventListener('click', function () {
-            console.log(getNamePlanetToVote(btn))
+            let namePlanetVote = getNamePlanetToVote(btn);
+            let idPlanetVote = getIdPlanetVote(btn);
+            console.log(namePlanetVote);
+            console.log(idPlanetVote);
+
+            let params = {
+                idPlanet: getIdPlanetVote(btn),
+                namePlanet: getNamePlanetToVote(btn)
+            };
+
+            dataHandler.sendVoteData(params);
         })
     }
 }
 
 function getNamePlanetToVote(btn) {
-    let namePlanet = btn.closest('tr').firstElementChild.textContent;
+    return btn.closest('tr').firstElementChild.textContent;
+}
+
+
+function getIdPlanetVote(btn) {
     let urlPlanet = btn.parentElement.previousSibling.getAttribute('url_pl');
-    console.log(urlPlanet);
-    getIdFromUrl(urlPlanet);
-    return namePlanet;
+    return getIdFromUrl(urlPlanet);
 }
 
 
