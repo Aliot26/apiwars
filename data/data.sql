@@ -25,7 +25,7 @@ CREATE TABLE planet_votes
   planet_id       INTEGER,
   planet_name     varchar,
   user_id         INTEGER,
-  submission_time INTEGER
+  submission_time timestamp without time zone
 );
 
 

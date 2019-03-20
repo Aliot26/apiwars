@@ -19,6 +19,21 @@ def get_one_user(cursor, username):
 
 
 @db_connect.connection_handler
+def get_user_id(cursor, username):
+    try:
+        cursor.execute("""
+                        SELECT id
+                        FROM users
+                        WHERE username = %(username)s ;
+                                   """,
+                       {'username': username})
+        data = cursor.fetchone()
+        return data
+    except psycopg2.Error as e:
+        print(e)
+
+
+@db_connect.connection_handler
 def add_user(cursor, user_data):
     try:
         cursor.execute("""

@@ -2,8 +2,9 @@ export {dataHandler}
 
 let dataHandler = {
     _dataPlanets: {},
+
     _dataResidents: {},
-    _status: {},
+
     loadData: function (url) {
         if (url === undefined) {
             url = 'https://swapi.co/api/planets/?page=1';
@@ -21,15 +22,18 @@ let dataHandler = {
         xhr.send();
     },
 
+
     init: function () {
         this.loadData();
 
     },
 
+
     getTable: function (callback) {
         let planets = this._dataPlanets;
         callback(planets);
     },
+
 
     getUrlResidents: function (url) {
         let results = this._dataPlanets.results;
@@ -39,11 +43,9 @@ let dataHandler = {
                 urlResidentsArr = planet.residents;
             }
         }
-
         dataHandler.loadResidents(urlResidentsArr);
-
-
     },
+
 
     loadResidents(urlResidentsArr) {
         this._dataResidents = {};
@@ -61,20 +63,23 @@ let dataHandler = {
         }
     },
 
+
     getResidentsTable: function (callback) {
         let residents = this._dataResidents;
         callback(residents);
     },
 
+
     getUsername: function (username) {
         let matches = document.cookie.match(new RegExp(
             "(?:^|; )" + username.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
         ));
+        console.log(document.cookie);
         return matches ? decodeURIComponent(matches[1]) : undefined;
     },
 
-    sendVoteData: function (params) {
 
+    sendVoteData: function (params) {
         let xhr = new XMLHttpRequest();
         xhr.open("POST", "/vote");
         xhr.setRequestHeader("Content-type", "application/json");

@@ -70,17 +70,19 @@ function addListenerVoteButton() {
     let voteBtnArr = document.getElementsByClassName('vote-btn');
     for (let btn of voteBtnArr) {
         btn.addEventListener('click', function () {
+
             let namePlanetVote = getNamePlanetToVote(btn);
             let idPlanetVote = getIdPlanetVote(btn);
             console.log(namePlanetVote);
             console.log(idPlanetVote);
 
             let params = {
-                idPlanet: getIdPlanetVote(btn),
-                namePlanet: getNamePlanetToVote(btn)
+                planet_id: getIdPlanetVote(btn),
+                planet_name: getNamePlanetToVote(btn)
             };
 
             dataHandler.sendVoteData(params);
+            btn.setAttribute('disabled', "disabled");
         })
     }
 }

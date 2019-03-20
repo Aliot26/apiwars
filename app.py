@@ -1,6 +1,7 @@
 from flask import Flask, render_template, url_for, escape, request, redirect, flash, session, make_response, jsonify
 from http import cookies
 from data_manager import user as user
+from data_manager import vote as vote
 
 app = Flask(__name__)
 app.secret_key = "waw"
@@ -47,8 +48,17 @@ def route_login():
     }
     if user.check_password(login_user):
         session['username'] = login_user['username']
+        user_id = user.get_user_id(login_user['username'])
+
+        dict_id_planets = vote.get_planet_id_by_user_id(user_id['id'])
+        list_id_planets = vote.get_id_list_from_dict(dict_id_planets)
+        string_id_planets = vote.convert_list_to_string(list_id_planets)
+        print(list_id_planets)
+        print(string_id_planets)
         resp = make_response(render_template('index.html'))
         resp.set_cookie('username', session['username'] )
+        resp.set_cookie('list_id_planets', string_id_planets)
+
         return resp
 
     if user.check_exists(login_user['username']):
@@ -69,8 +79,17 @@ def route_logout():
 
 @app.route('/vote', methods=["POST"])
 def route_vote():
-    content = request.json
-    print(content)
+    data_vote = request.json
+    user_data = user.get_user(session['username'])
+
+    vote_data = {
+        'planet_id': data_vote['planet_id'],
+        'planet_name': data_vote['planet_name'],
+        'user_id': user_data['id']
+    }
+    vote.add_vote_data(vote_data)
+
+    print(vote_data)
     return jsonify()
 
 

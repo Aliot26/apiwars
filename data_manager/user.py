@@ -61,3 +61,10 @@ def check_password(login_user):
         if verify:
             return True
         return False
+
+
+def get_user_id(username):
+    try:
+        return db_user.get_user_id(username)
+    except Exception as e:
+        print(e)
