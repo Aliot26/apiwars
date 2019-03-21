@@ -2,7 +2,7 @@ import {dataHandler} from "./data_handler.js";
 import {dom} from "./dom.js";
 import {getIdFromUrl} from "./format_data.js";
 
-export {addListenerButtonResident, addListenerPaginator, addListenerVoteButton};
+export {addListenerButtonResident, addListenerPaginator, addListenerVoteButton, getIdPlanetVote};
 
 
 function addListenerButtonResident() {
@@ -70,11 +70,8 @@ function addListenerVoteButton() {
     let voteBtnArr = document.getElementsByClassName('vote-btn');
     for (let btn of voteBtnArr) {
         btn.addEventListener('click', function () {
-
             let namePlanetVote = getNamePlanetToVote(btn);
             let idPlanetVote = getIdPlanetVote(btn);
-            console.log(namePlanetVote);
-            console.log(idPlanetVote);
 
             let params = {
                 planet_id: getIdPlanetVote(btn),

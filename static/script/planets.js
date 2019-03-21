@@ -2,11 +2,10 @@ import {
     formatDataDiameter,
     formatDataPopulation,
     formatDataSurface,
-    formatDataResidents,
-    createVoteButton
+    formatDataResidents
 } from "./format_data.js";
 import {dataHandler} from "./data_handler.js";
-import {addListenerButtonResident, addListenerPaginator, addListenerVoteButton} from "./listener_handler.js";
+import {addListenerButtonResident, addListenerPaginator, addListenerVoteButton, getIdPlanetVote} from "./listener_handler.js";
 
 export {createTablePlanets};
 
@@ -80,4 +79,35 @@ function addPaginatorButtons(data) {
     prevBtn.setAttribute('data-url', previousLink);
     let nextBtn = document.getElementById('next-link');
     nextBtn.setAttribute('data-url', nextLink);
+}
+
+
+function deactivateVoteButton(btn) {
+    let valueCookie = dataHandler.listVotePlanetsId("list_id_planets");
+    let idPlanetVote = getIdPlanetVote(btn);
+    for (let i = 0; i < valueCookie.length; i++) {
+        if (valueCookie[i] === idPlanetVote) {
+            btn.setAttribute("disabled", "disabled");
+        }
+    }
+
+}
+
+
+function createVoteButton() {
+    let btnArr = document.getElementsByClassName("vote");
+
+    for (let j = 1; j < btnArr.length; j++) {
+        if (btnArr[j].textContent === 'undefined') {
+            btnArr[j].textContent = "";
+        }
+
+        let btn = document.createElement('button');
+        btn.classList.add("btn-outline-secondary", "btn", "vote-btn");
+        btn.setAttribute("data-id-vote", "vote" + j);
+        btn.setAttribute("type", "submit");
+        btn.textContent = "Vote";
+        btnArr[j].appendChild(btn);
+        deactivateVoteButton(btn);
+    }
 }

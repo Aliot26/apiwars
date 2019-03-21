@@ -1,4 +1,11 @@
-export {formatDataDiameter,formatDataPopulation, formatDataSurface, formatDataResidents, formatDataGender, createVoteButton, getIdFromUrl}
+export {
+    formatDataDiameter,
+    formatDataPopulation,
+    formatDataSurface,
+    formatDataResidents,
+    formatDataGender,
+    getIdFromUrl
+}
 
 function formatDataDiameter() {
     let arrData = document.getElementsByClassName('diameter');
@@ -77,27 +84,11 @@ function formatDataGender(gender) {
 }
 
 
-function createVoteButton() {
-    let btnArr = document.getElementsByClassName("vote");
-
-    for (let j = 1; j < btnArr.length; j++) {
-        if(btnArr[j].textContent === 'undefined'){
-            btnArr[j].textContent = "";
-        }
-        let btn = document.createElement('button');
-
-        btn.classList.add("btn-outline-secondary", "btn", "vote-btn");
-        btn.setAttribute("data-id-vote", "vote" + j);
-        btn.setAttribute("type", "submit");
-        btn.textContent = "Vote";
-        btnArr[j].appendChild(btn);
-    }
-}
-
-
 function getIdFromUrl(url) {
     let idPlanet = url.match(/\d+/);
     idPlanet = idPlanet.join();
     return idPlanet;
 }
+
+
 

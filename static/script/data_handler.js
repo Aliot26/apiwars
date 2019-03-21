@@ -74,7 +74,7 @@ let dataHandler = {
         let matches = document.cookie.match(new RegExp(
             "(?:^|; )" + username.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
         ));
-        console.log(document.cookie);
+
         return matches ? decodeURIComponent(matches[1]) : undefined;
     },
 
@@ -85,14 +85,31 @@ let dataHandler = {
         xhr.setRequestHeader("Content-type", "application/json");
         xhr.onreadystatechange = function () {
             if (xhr.status === 200 && xhr.readyState === 4) {
-
                 console.log(params);
             } else {
                 console.log("We connected to the server, but it returned an error");
             }
         };
         xhr.send(JSON.stringify(params));
-    }
+    },
 
+
+    listVotePlanetsId: function (name) {
+        let nameCookie = name + "=";
+        let partCookie = document.cookie.split(";");
+        for (let i = 0; i < partCookie.length; i++) {
+            let c = partCookie[i];
+            while (c.charAt(0) == " ") {
+                c = c.substring(1, c.length);
+            }
+            if (c.indexOf(nameCookie) == 0) {
+                let stringId = c.substring(nameCookie.length, c.length);
+                return stringId.split(":");
+            }
+        }
+        return null;
+    }
 };
+
+
 
