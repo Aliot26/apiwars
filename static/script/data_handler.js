@@ -1,9 +1,19 @@
 export {dataHandler}
 
 let dataHandler = {
+    keyInLocalStorage: 'apiwars',
+
     _dataPlanets: {},
 
     _dataResidents: {},
+
+    saveDataLocalStorage: function (data) {
+        localStorage.setItem(this.keyInLocalStorage, JSON.stringify(data));
+    },
+
+    loadDataLocalStorage: function () {
+        return JSON.parse(localStorage.getItem(this.keyInLocalStorage));
+    },
 
     loadData: function (url) {
         if (url === undefined) {

@@ -53,7 +53,7 @@ def route_login():
         dict_id_planets = vote.get_planet_id_by_user_id(user_id['id'])
         list_id_planets = vote.get_id_list_from_dict(dict_id_planets)
         string_id_planets = vote.convert_list_to_string(list_id_planets)
-        resp = make_response(render_template('index.html'))
+        resp = make_response(redirect('/'))
         resp.set_cookie('username', session['username'])
         resp.set_cookie('list_id_planets', string_id_planets)
 
@@ -70,7 +70,7 @@ def route_login():
 @app.route('/logout')
 def route_logout():
     session.pop('username', None)
-    res = make_response(render_template('index.html'))
+    res = make_response(redirect('/'))
     res.set_cookie('username', expires=0)
     res.set_cookie('list_id_planets', expires=0)
     return res
