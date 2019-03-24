@@ -21,6 +21,18 @@ let dom = {
            createTableResidents(dataResidents);
         },1000)
 
+    },
+
+    displayMessageToUser: function(message, style, idForm){
+        let alertToUser = document.getElementById("alert-" +idForm);
+        console.log(idForm);
+        alertToUser.textContent = message;
+        this.showHideBlock(alertToUser, "block");
+    },
+
+    showHideBlock: function (elem, style) {
+        elem.style.display = style;
     }
-    
 };
+
+

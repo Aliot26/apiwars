@@ -17,62 +17,45 @@ def route_show_register_form():
     return render_template('registration.html', form_url='/registration')
 
 
-@app.route('/registration', methods=["POST"])
+@app.route('/register', methods=["POST"])
 def route_registration():
-    username = escape(request.form.get('username'))
-    first_password = escape(request.form.get('password1'))
-    second_password = escape(request.form.get('password2'))
+    data_register = request.get_json()
+    login_user = {
+        'username': data_register['username'],
+        'password': data_register['password']
+    }
 
-    if not user.check_data_validate(username, first_password, second_password):
-        flash('Please provide all data')
-        return redirect(url_for('route_show_register_form'))
-
-    if user.check_exists(username):
-        flash('This username exists already')
-        return redirect(url_for('route_show_register_form'))
-
-    if not user.check_passwords_equal(first_password, second_password):
-        flash('Passwords must be equal')
-        return redirect(url_for('route_show_register_form'))
-
-    if user.registration(username, first_password):
-        session['username'] = username
-    return redirect('/')
+    if not user.check_exists(login_user['username']):
+        user.registration(login_user['username'], login_user['password'])
+        make_response(redirect('/'))
+        return jsonify(
+            {'success': 'Registration successful!', 'username': login_user['username']})
+    else:
+        return jsonify({'error': 'Wrong username or password!'})
 
 
 @app.route('/login', methods=['POST'])
 def route_login():
+    data_login = request.get_json()
     login_user = {
-        'username': request.form.get('username'),
-        'password': request.form.get('password')
+        'username': data_login['username'],
+        'password': data_login['password']
     }
+
     if user.check_password(login_user):
-        session['username'] = login_user['username']
         user_id = user.get_user_id(login_user['username'])
-
-        dict_id_planets = vote.get_planet_id_by_user_id(user_id['id'])
-        list_id_planets = vote.get_id_list_from_dict(dict_id_planets)
-        string_id_planets = vote.convert_list_to_string(list_id_planets)
-        resp = make_response(redirect('/'))
-        resp.set_cookie('username', session['username'])
-        resp.set_cookie('list_id_planets', string_id_planets)
-
-        return resp
-
-    if user.check_exists(login_user['username']):
-        flash("Incorrect password")
-        return redirect('/')
-
-    flash("User is not in base. Please sign up.")
-    return render_template('registration.html')
+        string_id_planets = vote.get_planet_id_by_user_id(user_id['id'])
+        make_response(redirect('/'))
+        return jsonify(
+            {'success': 'Login successful!', 'username': login_user['username'], 'id_planets': string_id_planets})
+    else:
+        return jsonify({'error': 'Wrong username or password!'})
 
 
 @app.route('/logout')
 def route_logout():
     session.pop('username', None)
     res = make_response(redirect('/'))
-    res.set_cookie('username', expires=0)
-    res.set_cookie('list_id_planets', expires=0)
     return res
 
 

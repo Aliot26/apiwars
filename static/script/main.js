@@ -5,9 +5,6 @@ function init() {
 
     dataHandler.init();
 
-    let ww = "username";
-    console.log(dataHandler.getUsername(ww));
-
     setTimeout(function () {
         dom.loadTable();
 

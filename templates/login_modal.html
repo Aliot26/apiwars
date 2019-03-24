@@ -1,0 +1,30 @@
+<div id="popup-login" class="popup">
+    <div class="row justify-content-center">
+        <div class="col-6">
+            <div class="popup-content">
+                <div class="popup-header">
+                    <h2>Login form</h2>
+                    <span class="close">&times;</span>
+                </div>
+                <hr>
+                <div class="popup-body">
+                    <form class="form-inline" id="login" action="/login" method="POST">
+                        <input class="form-control mr-sm-2" type="text" id="username" name="username"
+                               placeholder="Username" required>
+                        <input class="form-control mr-sm-2" type="password" id="password" name="password"
+                               placeholder="Password"
+                               required>
+                        <button class="btn btn-outline-secondary" type="submit">Login</button>
+                    </form>
+                    <div id="alert-login" class="alert" role="alert" style="display:none;"></div>
+                </div>
+                <hr>
+                <div class="popup-footer">
+                    <p>
+                        <button class="btn btn-outline-secondary close">Close</button>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

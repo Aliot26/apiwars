@@ -1,3 +1,5 @@
+import {dom} from "./dom.js";
+
 export {dataHandler}
 
 let dataHandler = {
@@ -80,12 +82,10 @@ let dataHandler = {
     },
 
 
-    getUsername: function (username) {
-        let matches = document.cookie.match(new RegExp(
-            "(?:^|; )" + username.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
-        ));
-
-        return matches ? decodeURIComponent(matches[1]) : undefined;
+    getUsername: function () {
+        let dataFromLocalStorage = this.loadDataLocalStorage();
+        console.log(dataFromLocalStorage);
+        return dataFromLocalStorage['username'];
     },
 
 
@@ -104,21 +104,38 @@ let dataHandler = {
     },
 
 
-    listVotePlanetsId: function (name) {
-        let nameCookie = name + "=";
-        let partCookie = document.cookie.split(";");
-        for (let i = 0; i < partCookie.length; i++) {
-            let c = partCookie[i];
-            while (c.charAt(0) == " ") {
-                c = c.substring(1, c.length);
+    listVotePlanetsId: function () {
+        let dataFromStorage = this.loadDataLocalStorage();
+        let stringPlanetsId = dataFromStorage['id_planets'];
+        return stringPlanetsId.split(":");
+    },
+
+
+    loginData: function (dataFromForm, url) {
+        let xhr = new XMLHttpRequest();
+        console.log(url);
+        let urlServer = '/' + url;
+        console.log(urlServer);
+        xhr.open('POST', '/' + url);
+
+        xhr.setRequestHeader("Content-Type", "application/json");
+
+        xhr.onload = function () {
+            let serverResponse = JSON.parse(xhr.responseText);
+            if (serverResponse['success']) {
+                dom.displayMessageToUser(serverResponse['success'], "block", url);
+                dataHandler.saveDataLocalStorage(serverResponse);
+                setTimeout(function () {
+                    location.reload();
+                }, 2000);
+            } else {
+                dom.displayMessageToUser(serverResponse['error'], "block", url);
             }
-            if (c.indexOf(nameCookie) == 0) {
-                let stringId = c.substring(nameCookie.length, c.length);
-                return stringId.split(":");
-            }
-        }
-        return null;
+        };
+        xhr.send(JSON.stringify(dataFromForm));
     }
+
+
 };
 
 

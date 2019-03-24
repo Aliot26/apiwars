@@ -29,22 +29,19 @@
             <li class="nav-item">
                 <a class="nav-link" href="#">Voting statistics</a>
             </li>
-            {%if not session['username']%}
+
             <li class="nav-item">
-                <a class="nav-link" href="/registration">Registration</a>
+                <a class="nav-link" id="register-button" href="#" style="display:block;">Registration</a>
             </li>
-            {%endif%}
+            <li class="nav-item">
+                <a class="nav-link" id="login-button" href="#" style="display:block;">Login</a>
+            </li>
+
         </ul>
-        {%if not session['username']%}
-        <form class="form-inline" action="/login" method="POST">
-            <input class="form-control mr-sm-2" type="text" name="username" placeholder="Username" required>
-            <input class="form-control mr-sm-2" type="password" name="password" placeholder="Password" required>
-            <button class="btn btn-outline-secondary" id="btn_login" type="submit">Login</button>
-        </form>
-        {%else%}
-        <div id="sign"><span class="navbar-text">  Signed in as {{session['username']}}</span></div>
-        <a class="btn btn-outline-secondary" id="btn_logout" role="button" href='/logout'>Logout</a>
-        {%endif%}
+
+        <div id="sign"></div>
+        <a class="btn btn-outline-secondary" id="btn_logout" role="button" href='/logout'  style="display:none;">Logout</a>
+
     </nav>
 </header>
 <div class="container">

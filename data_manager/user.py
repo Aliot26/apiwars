@@ -61,6 +61,7 @@ def check_password(login_user):
         if verify:
             return True
         return False
+    return False
 
 
 def get_user_id(username):

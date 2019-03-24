@@ -10,7 +10,9 @@ def add_vote_data(data):
 
 def get_planet_id_by_user_id(user_id):
     try:
-        return db_vote.get_planet_id_by_user_id(user_id)
+        dict_planets_id = db_vote.get_planet_id_by_user_id(user_id)
+        list_planets_id = get_id_list_from_dict(dict_planets_id)
+        return convert_list_to_string(list_planets_id)
     except Exception as e:
         print(e)
 
