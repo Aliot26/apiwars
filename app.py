@@ -12,11 +12,6 @@ def route_index():
     return render_template('index.html')
 
 
-@app.route('/registration')
-def route_show_register_form():
-    return render_template('registration.html', form_url='/registration')
-
-
 @app.route('/register', methods=["POST"])
 def route_registration():
     data_register = request.get_json()
@@ -52,11 +47,10 @@ def route_login():
         return jsonify({'error': 'Wrong username or password!'})
 
 
-@app.route('/logout')
-def route_logout():
-    session.pop('username', None)
-    res = make_response(redirect('/'))
-    return res
+# @app.route('/logout')
+# def route_logout():
+#     res = make_response(redirect('/'))
+#     return res
 
 
 @app.route('/vote', methods=["POST"])
@@ -71,6 +65,12 @@ def route_vote():
     }
     vote.add_vote_data(vote_data)
     return jsonify()
+
+
+@app.route('/statistics')
+def route_statistics():
+    data_votes = vote.get_recived_votes_planets()
+    return jsonify(data_votes)
 
 
 if __name__ == "__main__":

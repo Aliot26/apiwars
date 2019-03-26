@@ -9,7 +9,8 @@ import {
     addListenerButtonResident,
     addListenerPaginator,
     addListenerVoteButton,
-    getIdPlanetVote
+    getIdPlanetVote,
+    addListenerStatisticsButton
 } from "./listener_handler.js";
 import {addLoginModal} from "./login.js";
 
@@ -75,6 +76,7 @@ function renderBodyTablePlanets(headersList, tablePlanet, results) {
     createVoteButton();
     addListenerVoteButton();
     addListenerPaginator();
+    addListenerStatisticsButton();
 }
 
 

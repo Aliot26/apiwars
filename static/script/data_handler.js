@@ -9,6 +9,8 @@ let dataHandler = {
 
     _dataResidents: {},
 
+    _dataStatistics: {},
+
     saveDataLocalStorage: function (data) {
         localStorage.setItem(this.keyInLocalStorage, JSON.stringify(data));
     },
@@ -85,8 +87,13 @@ let dataHandler = {
     getUsername: function () {
         let dataFromLocalStorage = this.loadDataLocalStorage();
         console.log(dataFromLocalStorage);
-        return dataFromLocalStorage['username'];
+        if (dataFromLocalStorage) {
+            return dataFromLocalStorage['username'];
+        } else {
+            return null;
+        }
     },
+
 
 
     sendVoteData: function (params) {
@@ -113,9 +120,6 @@ let dataHandler = {
 
     loginData: function (dataFromForm, url) {
         let xhr = new XMLHttpRequest();
-        console.log(url);
-        let urlServer = '/' + url;
-        console.log(urlServer);
         xhr.open('POST', '/' + url);
 
         xhr.setRequestHeader("Content-Type", "application/json");
@@ -133,6 +137,26 @@ let dataHandler = {
             }
         };
         xhr.send(JSON.stringify(dataFromForm));
+    },
+
+
+    loadStatisticsData: function () {
+        let xhr = new XMLHttpRequest();
+        xhr.open("GET", '/statistics');
+        xhr.onreadystatechange = function () {
+            if (xhr.status === 200 && xhr.readyState === 4) {
+                dataHandler._dataStatistics = JSON.parse(xhr.responseText);
+
+            } else {
+                console.log("We connected to the server, but it returned an error");
+            }
+        };
+        xhr.send();
+    },
+
+    getTableStatistics: function (callback) {
+        let statistics = this._dataStatistics;
+        callback(statistics);
     }
 
 

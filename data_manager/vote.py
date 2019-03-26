@@ -28,3 +28,10 @@ def get_id_list_from_dict(dict):
 def convert_list_to_string(list):
     new_string = ':'.join(str(e) for e in list)
     return new_string
+
+
+def get_recived_votes_planets():
+    try:
+        return db_vote.get_recived_votes_planets()
+    except  Exception as e:
+        print(e)

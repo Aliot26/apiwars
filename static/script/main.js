@@ -8,10 +8,7 @@ function init() {
     setTimeout(function () {
         dom.loadTable();
 
-
     }, 3000);
-
-
 
 }
 

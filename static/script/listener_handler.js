@@ -9,6 +9,7 @@ export {
     getIdPlanetVote,
     addListenerUserModal,
     addListenerLogoutButton,
+    addListenerStatisticsButton
 };
 
 
@@ -19,7 +20,7 @@ function addListenerButtonResident() {
             popUpModal('popup-resident');
             let urlPlanet = displayNamePlanetIntoResidentsWindow(btn);
             dataHandler.getUrlResidents(urlPlanet);
-            dataHandler.loadResidents();
+            // dataHandler.loadResidents();
             dom.loadResidentsTable();
         });
     }
@@ -38,10 +39,8 @@ function popUpModal(elementId) {
     let popUpWindow = document.getElementById(elementId);
     let popUpClose = document.getElementsByClassName("close");
     let tableBody = document.getElementById('table-body');
-    let alertToUser = document.getElementById('alert');
     if (popUpWindow.style.display === "block") {
         popUpWindow.style.display = "none";
-        alertToUser.style.display = "none";
     }
     popUpWindow.style.display = "block";
 
@@ -49,7 +48,6 @@ function popUpModal(elementId) {
         popUpClose[i].addEventListener("click", function () {
             tableBody.innerHTML = "";
             popUpWindow.style.display = "none";
-            alertToUser.style.display = "none";
             // location.reload();
         })
     }
@@ -58,7 +56,6 @@ function popUpModal(elementId) {
         if (e.target === popUpWindow) {
             tableBody.innerHTML = "";
             popUpWindow.style.display = "none";
-            alertToUser.style.display = "none";
         }
     }
 }
@@ -162,4 +159,15 @@ function addListenerLogoutButton(buttonLogout) {
 }
 
 
+function addListenerStatisticsButton() {
+    let btnStatistics = document.getElementById('statistics-button');
+    btnStatistics.addEventListener('click', function (event) {
+        event.preventDefault();
+        popUpModal('popup-statistics');
+        dataHandler.loadStatisticsData();
+        dom.loadStatisticsTable();
+        console.log(dataHandler._dataStatistics);
+
+    })
+}
 
