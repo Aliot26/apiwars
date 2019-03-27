@@ -20,7 +20,6 @@ function addListenerButtonResident() {
             popUpModal('popup-resident');
             let urlPlanet = displayNamePlanetIntoResidentsWindow(btn);
             dataHandler.getUrlResidents(urlPlanet);
-            // dataHandler.loadResidents();
             dom.loadResidentsTable();
         });
     }
@@ -39,6 +38,7 @@ function popUpModal(elementId) {
     let popUpWindow = document.getElementById(elementId);
     let popUpClose = document.getElementsByClassName("close");
     let tableBody = document.getElementById('table-body');
+
     if (popUpWindow.style.display === "block") {
         popUpWindow.style.display = "none";
     }
@@ -48,7 +48,6 @@ function popUpModal(elementId) {
         popUpClose[i].addEventListener("click", function () {
             tableBody.innerHTML = "";
             popUpWindow.style.display = "none";
-            // location.reload();
         })
     }
 
@@ -67,6 +66,7 @@ function addListenerPaginator() {
         if (pagBtn.getAttribute("data-url") === 'null') {
             pagBtn.setAttribute("disabled", "disabled");
         } else {
+            pagBtn.removeAttribute("disabled");
             pagBtn.addEventListener('click', function () {
                 let url = pagBtn.dataset.url;
                 dataHandler.loadData(url);
@@ -117,6 +117,21 @@ function convertNameElement(element) {
     return arrName[1];
 }
 
+function validateDataRegister() {
+    let dataFromForm = {};
+    dataFromForm['username'] = document.getElementById('username-reg').value;
+    dataFromForm['password1'] = document.getElementById('password1').value;
+    dataFromForm['password2'] = document.getElementById('password2').value;
+    if (dataFromForm.password2 === dataFromForm.password1 && dataFromForm.username) {
+        dataFromForm['password'] = dataFromForm.password1;
+        dataFromForm['password1'] = undefined;
+        dataFromForm['password2'] = undefined;
+    } else {
+        dom.displayMessageToUser("Fill the form correctly.", "block", formId);
+    }
+    return dataFromForm;
+}
+
 
 function addListenerSubmitButton(element) {
     let formId = convertNameElement(element);
@@ -128,17 +143,7 @@ function addListenerSubmitButton(element) {
                 dataFromForm['username'] = document.getElementById('username').value;
                 dataFromForm['password'] = document.getElementById('password').value;
             } else if (formId === "register") {
-                dataFromForm['username'] = document.getElementById('username-reg').value;
-                dataFromForm['password1'] = document.getElementById('password1').value;
-                dataFromForm['password2'] = document.getElementById('password2').value;
-
-                if (dataFromForm.password2 === dataFromForm.password1 && dataFromForm.username) {
-                    dataFromForm['password'] = dataFromForm.password1;
-                    dataFromForm['password1'] = undefined;
-                    dataFromForm['password2'] = undefined;
-                } else {
-                    dom.displayMessageToUser("Fill the form correctly.", "block", formId);
-                }
+                dataFromForm = validateDataRegister();
             }
             if (dataFromForm.username && dataFromForm.password) {
                 dataHandler.loginData(dataFromForm, formId);
@@ -166,8 +171,6 @@ function addListenerStatisticsButton() {
         popUpModal('popup-statistics');
         dataHandler.loadStatisticsData();
         dom.loadStatisticsTable();
-        console.log(dataHandler._dataStatistics);
-
     })
 }
 

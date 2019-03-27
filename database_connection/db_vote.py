@@ -36,8 +36,9 @@ def get_planet_id_by_user_id(cursor, user_id):
 
 @db_connect.connection_handler
 def get_recived_votes_planets(cursor):
-    sql_string = """SELECT planet_name 
-                    FROM planet_votes;"""
+    sql_string = """SELECT planet_name, COUNT(planet_name) AS votes
+                    FROM planet_votes
+                    GROUP BY planet_name;"""
     try:
         cursor.execute(sql_string)
         data = cursor.fetchall()

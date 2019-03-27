@@ -86,7 +86,6 @@ let dataHandler = {
 
     getUsername: function () {
         let dataFromLocalStorage = this.loadDataLocalStorage();
-        console.log(dataFromLocalStorage);
         if (dataFromLocalStorage) {
             return dataFromLocalStorage['username'];
         } else {
@@ -145,14 +144,15 @@ let dataHandler = {
         xhr.open("GET", '/statistics');
         xhr.onreadystatechange = function () {
             if (xhr.status === 200 && xhr.readyState === 4) {
+                dataHandler._dataStatistics = {};
                 dataHandler._dataStatistics = JSON.parse(xhr.responseText);
-
             } else {
                 console.log("We connected to the server, but it returned an error");
             }
         };
         xhr.send();
     },
+
 
     getTableStatistics: function (callback) {
         let statistics = this._dataStatistics;
