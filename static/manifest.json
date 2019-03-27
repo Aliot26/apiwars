@@ -1,0 +1,9 @@
+{
+  "short_name": "api",
+  "name": "apiwarss",
+  "scope": "/",
+  "start_url": "/",
+  "background_color": "#ff0",
+  "theme_color": "#2a6fa5",
+  "display": "fullscreen"
+}

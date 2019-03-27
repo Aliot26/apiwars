@@ -12,6 +12,11 @@ def route_index():
     return render_template('index.html')
 
 
+@app.route('/service-worker.js', methods=['GET'])
+def sw():
+    return app.send_static_file('index.js')
+
+
 @app.route('/register', methods=["POST"])
 def route_registration():
     data_register = request.get_json()
