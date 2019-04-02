@@ -1,5 +1,4 @@
 import {formatDataGender} from "./format_data.js";
-
 export {createTableResidents};
 
 function createTableResidents(dataResidents) {

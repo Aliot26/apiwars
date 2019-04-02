@@ -1,5 +1,4 @@
 from flask import Flask, render_template, url_for, escape, request, redirect, flash, session, make_response, jsonify
-from http import cookies
 from data_manager import user as user
 from data_manager import vote as vote
 

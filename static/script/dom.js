@@ -42,7 +42,7 @@ let dom = {
 
     showHideBlock: function (elem, style) {
         elem.style.display = style;
-    }
+    },
 
 
 };
