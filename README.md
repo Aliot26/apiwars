@@ -23,8 +23,14 @@ Used  dynamic DOM rendering, event-driving approach, callbacks, promises.
 Shows on main page data retrived from Star Wars Api:
 ![ScreenShot](https://github.com/Aliot26/apiwars/blob/master/static/images/prints-creen/start-page.png?raw=true)
 
-Shows on main page data retrived from Star Wars Api
 Displays details about planets' residents
-Displays form to register or login
-Gives possibility to vote on planet
+![ScreenShot](https://github.com/Aliot26/apiwars/blob/master/static/images/prints-creen/planets-residents.png?raw=true)
 
+Displays form to register or login
+![ScreenShot](https://github.com/Aliot26/apiwars/blob/master/static/images/prints-creen/login.png?raw=true)
+
+Gives possibility to vote on planet
+![ScreenShot](https://github.com/Aliot26/apiwars/blob/master/static/images/prints-creen/vote-page.png?raw=true)
+
+Shows results of voting
+![ScreenShot](https://github.com/Aliot26/apiwars/blob/master/static/images/prints-creen/vote-statistic.png?raw=true)
