@@ -3,7 +3,7 @@
 A web application which shows data from Star Wars Universum. Data, in JSON format, is retrieved from external API using AJAX. 
 Used  dynamic DOM rendering, event-driving approach, callbacks, promises.
 
-- Ajax fetching data
+- AJAX fetching data
 - Handling JSON format
 - JS template strings
 - Arrow functions
