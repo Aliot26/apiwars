@@ -21,7 +21,7 @@ Used  dynamic DOM rendering, event-driving approach, callbacks, promises.
 
 ## Screenshots:
 Shows on main page data retrived from Star Wars Api:
-![ScreenShot](https://github.com/Aliot26/DiamondsGame/blob/master/static/image/screenshots/start1.png?raw=true)
+![ScreenShot](https://github.com/Aliot26/apiwars/blob/master/static/images/prints-creen/start-page.png?raw=true)
 
 Shows on main page data retrived from Star Wars Api
 Displays details about planets' residents
