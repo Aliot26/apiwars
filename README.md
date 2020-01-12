@@ -19,6 +19,9 @@ Used  dynamic DOM rendering, event-driving approach, callbacks, promises.
 - bcript
 - html/css
 
+## Project web page:
+- https://app-apiwars.herokuapp.com/
+
 ## Screenshots:
 Shows on main page data retrived from Star Wars Api:
 ![ScreenShot](https://github.com/Aliot26/apiwars/blob/master/static/images/prints-creen/start-page.png?raw=true)
